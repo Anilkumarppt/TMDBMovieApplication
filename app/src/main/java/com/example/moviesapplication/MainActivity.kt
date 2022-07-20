@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -16,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.moviesapplication.data.viewmodel.MoviesListViewModel
+import com.example.moviesapplication.ui.screens.ScaffoldWithTopBar
 import com.example.moviesapplication.ui.theme.MoviesApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -35,12 +38,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Greeting("Android")
+                    ScaffoldWithTopBar()
                     moviesListView.getPopularMoviesList()
                     lifecycleScope.launchWhenCreated {
                         moviesListView.popularMoviesList.collect { value: MoviesListViewModel.MoviesEvent->
                             when(value){
                                 is MoviesListViewModel.MoviesEvent.Success->{
-                                    Log.d("MainActivity ",{value.moviesList.size}.toString())
+                                    Log.d("MainActivitymovieslist",
+                                        {value.moviesList.size}.toString())
                                 }
                                 is MoviesListViewModel.MoviesEvent.Failure->{
                                     Log.d(TAG, "onCreate: ${value.errorText}")
@@ -66,5 +71,8 @@ fun Greeting(name: String) {
 fun DefaultPreview() {
     MoviesApplicationTheme {
         Greeting("Android")
+        Column(Modifier.fillMaxWidth()) {
+
+        }
     }
 }
