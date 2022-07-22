@@ -100,6 +100,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
 
+    implementation "com.github.skydoves:landscapist-coil:1.5.1"
     // Testing Dependencies
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"

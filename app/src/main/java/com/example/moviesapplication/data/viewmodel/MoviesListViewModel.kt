@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.moviesapplication.data.MoviePagingSource
 import com.example.moviesapplication.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,9 +29,13 @@ class MoviesListViewModel @Inject constructor(private val moviesListRepository: 
         object Empty:MoviesEvent()
     }
     private val _popularMoviesList=MutableStateFlow<MoviesEvent>(MoviesEvent.Empty)
-    val popularMoviesList:StateFlow<MoviesEvent> =_popularMoviesList
+    val popularMoviesList:Flow<MoviesEvent> =_popularMoviesList
 
-    fun getPopularMoviesList(){
+    val movies: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 20)) {
+        MoviePagingSource(moviesListRepository)
+    }.flow
+
+   /* fun getPopularMoviesList(){
     _popularMoviesList.value=MoviesEvent.Loading
         viewModelScope.launch(Dispatchers.IO) {
          when(val result=moviesListRepository.getPopularMoviesList()){
@@ -39,6 +47,6 @@ class MoviesListViewModel @Inject constructor(private val moviesListRepository: 
              }
          }
         }
-    }
+    }*/
 
 }

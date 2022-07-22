@@ -5,5 +5,5 @@ import com.example.moviesapplication.utils.Resource
 import java.util.concurrent.Flow
 
 interface MainRepository {
-    suspend fun getPopularMoviesList(): Resource<MovieDto>?
+    suspend fun getPopularMoviesList(page:Int): Resource<MovieDto>?
 }
