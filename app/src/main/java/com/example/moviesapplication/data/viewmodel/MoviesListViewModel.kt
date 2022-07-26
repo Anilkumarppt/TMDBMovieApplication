@@ -14,39 +14,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.moviesapplication.data.MoviePagingSource
 import com.example.moviesapplication.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MoviesListViewModel @Inject constructor(private val moviesListRepository: MoviesListRepository):ViewModel(){
-
-    sealed class MoviesEvent{
-        class Success(val moviesList:List<Movie>):MoviesEvent()
-        class Failure(val errorText:String):MoviesEvent()
-        object Loading:MoviesEvent()
-        object Empty:MoviesEvent()
-    }
-    private val _popularMoviesList=MutableStateFlow<MoviesEvent>(MoviesEvent.Empty)
-    val popularMoviesList:Flow<MoviesEvent> =_popularMoviesList
-
+class MoviesListViewModel @Inject constructor(private val moviesListRepository: MoviesListRepository) :
+    ViewModel() {
     val movies: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 20)) {
         MoviePagingSource(moviesListRepository)
-    }.flow
-
-   /* fun getPopularMoviesList(){
-    _popularMoviesList.value=MoviesEvent.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-         when(val result=moviesListRepository.getPopularMoviesList()){
-             is Resource.Error->
-                 _popularMoviesList.value=MoviesEvent.Failure(result.message!!)
-             is Resource.Success->{
-                 val movies=result.data!!
-                 _popularMoviesList.value=MoviesEvent.Success(movies.moviesList)
-             }
-         }
-        }
-    }*/
+    }.flow.cachedIn(viewModelScope)
 
 }

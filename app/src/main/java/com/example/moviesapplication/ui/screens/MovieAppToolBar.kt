@@ -1,11 +1,6 @@
 package com.example.moviesapplication.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
-
-import com.example.moviesapplication.data.network.model.Movie
-
-import androidx.compose.ui.Modifier
 
 
 import androidx.compose.foundation.layout.*
@@ -22,10 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moviesapplication.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun MainTopAppBar() =
+fun MainTopAppBar(scaffoldState: ScaffoldState, snackbarCoroutineScope: CoroutineScope) =
     TopAppBar(
         title = {
             Text(
@@ -37,28 +34,35 @@ fun MainTopAppBar() =
         backgroundColor = Color.DarkGray,
         contentColor = Color.White,
         navigationIcon = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { snackbarCoroutineScope.launch {
+                scaffoldState.snackbarHostState.showSnackbar("TODO implement Navigation Drawer")
+            }}) {
                 Icon(Icons.Filled.Menu, contentDescription = "")
             }
         },
         actions = {
-            IconButton(onClick = {/* Do Something*/ }) {
+            IconButton(onClick = {snackbarCoroutineScope.launch {
+                scaffoldState.snackbarHostState.showSnackbar("TODO Sort movies ") } }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
-                    null, tint = Color.White
+                    "Sort movies",
+                    tint = Color.White
                 )
             }
-            IconButton(onClick = { }) {
+            IconButton(onClick = { snackbarCoroutineScope.launch {
+                scaffoldState.snackbarHostState.showSnackbar("TODO Implement Search") }})
+            {
                 Icon(
                     Icons.Filled.Search,
                     null, tint = Color.White
                 )
             }
-            IconButton(onClick = {/* Do Something*/ }) {
+            IconButton(onClick = {snackbarCoroutineScope.launch {
+                scaffoldState.snackbarHostState.showSnackbar("TODO Implement Favorite  ") } }) {
 
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_heart),
-                    null,
+                    "Favorite",
                     tint = Color.Red
                 )
             }
@@ -70,20 +74,7 @@ fun MainTopAppBar() =
 
 
 @Composable
-fun ScaffoldWithTopBar() {
-    Scaffold(
-        topBar = { MainTopAppBar() },
-        content = {},
-        floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
-            }
-        }
-    )
-
-}
-
-@Composable
 @Preview
 fun DefaultPreview() {
-    ScaffoldWithTopBar()
+    //ScaffoldWithTopBar()
 }

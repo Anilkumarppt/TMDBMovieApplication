@@ -42,7 +42,8 @@ object NetworkModule {
             .dns(Dns.SYSTEM)
             .connectTimeout(60,TimeUnit.SECONDS)
             .addInterceptor(interceptor = authenticateInterceptor)
-            .addInterceptor(logging)
+               /*TODO Comment below line until complete Project. Below Line prints the HTTPS Logs.*/
+            //.addInterceptor(logging)
             .build()
     }
 }

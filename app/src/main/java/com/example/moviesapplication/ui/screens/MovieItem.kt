@@ -13,37 +13,31 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MovieCreation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.Coil
-import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
 import coil.size.Scale
-import com.example.moviesapplication.BuildConfig
 import com.example.moviesapplication.R
 import com.example.moviesapplication.data.network.model.Movie
 import com.example.moviesapplication.ui.common.LoadingIndicator
-import com.example.moviesapplication.ui.common.Poster
-import com.example.moviesapplication.utils.AppConstants.thumbSize185
-import com.example.moviesapplication.utils.AppConstants.thumbUrl
-import com.skydoves.landscapist.coil.CoilImage
 
 
 @Composable
 fun MovieScreen(){
     val scaffoldState= rememberScaffoldState()
     val context= LocalContext.current
+    val snackbarCoroutineScope= rememberCoroutineScope()
     Scaffold(
-        topBar = { MainTopAppBar() },
+        scaffoldState = scaffoldState,
+        topBar = { MainTopAppBar(scaffoldState, snackbarCoroutineScope) },
         content = {innerPadding->
                 Card(
                     modifier = Modifier
@@ -62,7 +56,7 @@ fun MovieScreen(){
         /*floatingActionButton = {
             FloatingActionButton(onClick = { *//*TODO*//* }) {
             }
-        },*/ scaffoldState = scaffoldState
+        },*/
     )
 }
 @Composable

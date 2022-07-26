@@ -21,19 +21,23 @@ class MoviePagingSource @Inject constructor(private val moviesListRepo:MoviesLis
         return try {
             val nextPage = params.key ?: 1
             val movieListResponse = moviesListRepo.getPopularMoviesList(nextPage)
-            movieListResponse.data?.moviesList?.map {
-                it.poster_path=thumbUrl+thumbSize185+it.poster_path
-            }
+
+            if(movieListResponse.data!=null)
+                movieListResponse.data.moviesList.map {
+                    it.poster_path=thumbUrl+thumbSize185+it.poster_path
+                }
+            else
+                return LoadResult.Error(Exception(movieListResponse.message))
             LoadResult.Page(
                 data = movieListResponse.data!!.moviesList,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
                 nextKey = movieListResponse.data.page.plus(1)
             )
         } catch (e: Exception) {
-            LoadResult.Error(Exception(e.localizedMessage))
+            LoadResult.Error(e)
         }
         catch (e:HttpException){
-            LoadResult.Error(Exception(e.localizedMessage))
+            LoadResult.Error(e)
         }
     }
 }
