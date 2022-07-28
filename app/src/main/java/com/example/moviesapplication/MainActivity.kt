@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.example.moviesapplication.data.viewmodel.MoviesListViewModel
 import com.example.moviesapplication.ui.screens.MainScreen
+import com.example.moviesapplication.ui.screens.MovieApp
 import com.example.moviesapplication.ui.theme.MoviesApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MoviesApplicationTheme {
-                MainScreen(mainViewModel = moviesListView)
+              MovieApp()
             }
         }
     }

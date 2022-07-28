@@ -73,7 +73,7 @@ fun Poster(
 @Composable
 @Preview
 fun DisplayPreview(){
-    PosterItem(poster = posterURL, title = title , movieId =22 , scrollId =3 , onPosterClick ={movieId,scrollId-> } )
+    //PosterItem(poster = posterURL, title = title , movieId =22 , scrollId =3 , onPosterClick ={movieId,scrollId-> } )
 }
 
 @OptIn(ExperimentalCoilApi::class)

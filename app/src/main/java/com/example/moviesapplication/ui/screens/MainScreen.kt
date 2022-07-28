@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -38,20 +39,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun MainScreen(mainViewModel: MoviesListViewModel) {
+fun MainScreen(navController: NavController,mainViewModel: MoviesListViewModel) {
     val scaffoldState = rememberScaffoldState()
     val snackbarCoroutineScope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             MainTopAppBar(scaffoldState = scaffoldState, snackbarCoroutineScope)
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(bottom = paddingValues.calculateBottomPadding())
+                .padding(bottom = paddingValues.calculateBottomPadding()),
+            content = {
+                MovieList(
+                    movies = mainViewModel.movies,
+                    scaffoldState = scaffoldState,
+                    snackbarCoroutineScope = snackbarCoroutineScope, navController = navController
+                )
+            }
         )
-        { MovieList(movies = mainViewModel.movies, scaffoldState, snackbarCoroutineScope) }
     }
 }
 
@@ -64,21 +71,26 @@ val Rating: Float = 7.2F
 fun MovieList(
     movies: Flow<PagingData<Movie>>,
     scaffoldState: ScaffoldState,
-    snackbarCoroutineScope: CoroutineScope
+    snackbarCoroutineScope: CoroutineScope,
+    navController: NavController
 ) {
     val lazyMovieItems = movies.collectAsLazyPagingItems()
     val context = LocalContext.current
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
 
             .background(MaterialTheme.colors.background)
     ) {
         LazyVerticalGrid(cells = GridCells.Fixed(2),
             content = {
                 items(lazyMovieItems.itemCount) { it: Int ->
-                    MovieItem(movie = lazyMovieItems.get(it)!!, onPosterClick = { movieId,scrolId ->
-                        Toast.makeText(context, movieId, Toast.LENGTH_LONG).show()
-                    })
+                    MovieItem(
+                        movie = lazyMovieItems.get(it)!!,
+                        onPosterClick = { movieId, scrolId ->
+                            navController.navigate(MovieAppScreen.DetailsScreen.withNavArgs(movieId))
+                            //Toast.makeText(context, movieId, Toast.LENGTH_LONG).show()
+                        })
                 }
                 lazyMovieItems.apply {
                     when {
@@ -90,14 +102,14 @@ fun MovieList(
                         loadState.append is LoadState.Loading -> {
                             item {
                                 LoadingItem()
-                               /* Box(
-                                    Modifier
-                                        .height(278.dp)
-                                        .width(185.dp),
-                                    Alignment.Center
-                                ) {
-                                    LoadingItem()
-                                }*/
+                                /* Box(
+                                     Modifier
+                                         .height(278.dp)
+                                         .width(185.dp),
+                                     Alignment.Center
+                                 ) {
+                                     LoadingItem()
+                                 }*/
                             }
                         }
                         loadState.refresh is LoadState.Error -> {
@@ -129,7 +141,7 @@ fun MovieList(
 @Composable
 fun MovieItem(
     movie: Movie,
-    onPosterClick: (Int,Int) -> Unit,
+    onPosterClick: (Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -151,7 +163,12 @@ fun MovieItem(
                 movie = movie,
                 onMovieClicked = onMovieClicked
             )*/
-           PosterItem(poster = movie.poster_path, title =movie.title , movieId =movie.id , scrollId = 1, onPosterClick ={movieId,scrollId-> } )
+            PosterItem(
+                poster = movie.poster_path,
+                title = movie.title,
+                movieId = movie.id,
+                scrollId = 1,
+                onPosterClick )
 
             // Title
             Text(
@@ -159,13 +176,14 @@ fun MovieItem(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(top = 4.dp, start = 5.dp).
-                            align(Alignment.Start)
+                modifier = Modifier
+                    .padding(top = 4.dp, start = 5.dp)
+                    .align(Alignment.Start)
             )
 
             // Rating
             Row(
-                horizontalArrangement=Arrangement.Start,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 5.dp)
 
