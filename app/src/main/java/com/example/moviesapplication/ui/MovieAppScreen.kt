@@ -1,10 +1,10 @@
-package com.example.moviesapplication.ui.screens
+package com.example.moviesapplication.ui
 
 
 
 sealed class MovieAppScreen(val route:String){
-    object MovieListScreen:MovieAppScreen(route = "movie_list")
-    object DetailsScreen:MovieAppScreen(route = "detail_screen")
+    object MovieListScreen: MovieAppScreen(route = "movie_list")
+    object DetailsScreen: MovieAppScreen(route = "detail_screen")
 
     fun withNavArgs( vararg args:Int):String{
         return buildString {

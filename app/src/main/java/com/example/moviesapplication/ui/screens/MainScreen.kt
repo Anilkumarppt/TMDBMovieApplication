@@ -1,7 +1,5 @@
 package com.example.moviesapplication.ui.screens
 
-import android.graphics.Paint
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -30,7 +28,9 @@ import coil.request.ImageRequest
 import com.example.moviesapplication.R
 import com.example.moviesapplication.data.network.model.Movie
 import com.example.moviesapplication.data.viewmodel.MoviesListViewModel
+import com.example.moviesapplication.ui.MovieAppScreen
 import com.example.moviesapplication.ui.common.*
+import com.example.moviesapplication.ui.theme.backGroundColor
 import com.example.moviesapplication.utils.AppConstants.thumbSize185
 import com.example.moviesapplication.utils.AppConstants.thumbUrl
 import com.skydoves.landscapist.coil.CoilImage
@@ -44,6 +44,7 @@ fun MainScreen(navController: NavController,mainViewModel: MoviesListViewModel) 
     val snackbarCoroutineScope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
+        backgroundColor = backGroundColor,
         topBar = {
             MainTopAppBar(scaffoldState = scaffoldState, snackbarCoroutineScope)
         },
@@ -79,8 +80,6 @@ fun MovieList(
     Column(
         modifier = Modifier
             .fillMaxSize()
-
-            .background(MaterialTheme.colors.background)
     ) {
         LazyVerticalGrid(cells = GridCells.Fixed(2),
             content = {
@@ -260,7 +259,7 @@ fun MovieTitle(
     modifier: Modifier = Modifier
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.wrapContentHeight(),
         text = title,
         maxLines = 2,
         style = MaterialTheme.typography.h6,

@@ -76,7 +76,6 @@ fun DisplayPreview(){
     //PosterItem(poster = posterURL, title = title , movieId =22 , scrollId =3 , onPosterClick ={movieId,scrollId-> } )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun PosterItem(
     poster: String?,
@@ -103,13 +102,13 @@ fun PosterItem(
                 .fillMaxWidth()
                 .clickable(onClick = { onPosterClick(movieId, scrollId) })
         )
-    }
+
     val state=posterPainter.state
-    when(state){
-        is ImagePainter.State.Empty->{
+    when(state) {
+        is ImagePainter.State.Empty -> {
 
         }
-        is ImagePainter.State.Loading->{
+        is ImagePainter.State.Loading -> {
             LoadingIndicator()
             /*Box(
                 Modifier
@@ -120,14 +119,13 @@ fun PosterItem(
                 LoadingIndicator()
             }*/
         }
-        is ImagePainter.State.Success->{}
-        is ImagePainter.State.Error->{
+        is ImagePainter.State.Success -> {}
+        is ImagePainter.State.Error -> {
             Box(
                 Modifier
                     .height(278.dp)
-                    .width(185.dp)
-                    .border(1.dp, MaterialTheme.colors.secondary.copy(alpha = 0.5F))
-                ,Alignment.Center){
+                    .width(185.dp), Alignment.Center
+            ) {
                 Icon(
                     Icons.Default.MovieCreation,
                     contentDescription = title,
@@ -147,7 +145,8 @@ fun PosterItem(
                 }
             }
         }
-    }
+
+    }}
 }
 
 private val cardWidth = 150.dp
